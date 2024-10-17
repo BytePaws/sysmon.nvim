@@ -50,6 +50,8 @@ It will refresh every 5 seconds.
 - [ ] Implement Unittests
 - [ ] Experiment with icons instead of Text labels
 - [ ] Fix content not refreshing when cursor is still
+- [ ] Support other status bar plugins
+- [ ] Support other neovim setups besides LunarVim
 
 ## License
 
