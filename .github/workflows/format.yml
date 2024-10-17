@@ -1,0 +1,33 @@
+name: Format and Lint
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  format_and_lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up Lua
+      uses: leafo/gh-actions-lua@v7
+      with:
+        lua-version: '5.4'
+
+    - name: Install stylua
+      run: luarocks install stylua
+
+    - name: Run luacheck
+      run: luacheck lua/
+
+    - name: Check format with stylua
+      run: stylua --check .
+
+    - name: Run stylua autofix (if PR)
+      if: github.event_name == 'pull_request'
+      run: stylua .
