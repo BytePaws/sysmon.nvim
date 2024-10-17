@@ -3,7 +3,8 @@ local M = {}
 -- Cached values to avoid unnecessary updates
 local cached_cpu, cached_mem, cached_temp = "", "", ""
 local last_update = 0
-local update_interval = 5000 -- 5 seconds
+local update_interval = 1000 -- 1 second
+local timer = 2000
 
 -- Utility function to run shell commands asynchronously
 local function run_command(cmd, callback)
@@ -35,7 +36,7 @@ local function run_command(cmd, callback)
 	end)
 end
 
--- Trim whitespace utility function
+-- Trim whitespace
 local function trim(str)
 	return str:match("^%s*(.-)%s*$") or ""
 end
@@ -55,7 +56,7 @@ function M.update_sys()
 		end)
 
 	-- Fetch memory usage
-	run_command("free -m | awk 'NR==2{printf \"Mem: %s/%sMB\", $3,$2 }'", function(mem)
+	run_command("free -m | awk 'NR==2{printf \"Mem: %.2f/%.2f GB\", $3/1024,$2/1024 }'", function(mem)
 		cached_mem = trim(mem)
 	end)
 
