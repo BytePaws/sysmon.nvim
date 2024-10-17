@@ -6,29 +6,36 @@ local last_update = 0
 local interval = 5000 -- 5000 milliseconds (5 secs)
 
 -- Execute shell commands asynchronously
+--- @param cmd string the the bash command to execute
+--- @param callback function the callback to handle command results
 local function run_command(cmd, callback)
-    local handle = vim.loop.spawn("bash", {
-        args = { "-c", cmd },
-        stdio = { nil, vim.loop.new_pipe(false), vim.loop.new_pipe(false) },
-    }, function(code, signal)
-        if code ~= 0 then
-            callback(nil, code, signal)  -- Send error code if command fails
-        end
-        handle:close()
-    end)
+	--- @type uv_handle_t|nil
+	local handle = vim.loop.spawn("bash", {
+		args = { "-c", cmd },
+		stdio = { nil, vim.loop.new_pipe(false), vim.loop.new_pipe(false) },
+	}, function(code, signal)
+		if code ~= 0 then
+			callback(nil, code, signal) -- Send error code if command fails
+		end
+		handle:close()
+	end)
 
-    local stdout = handle:get_stdout()
-    local output = ""
-    stdout:read_start(function(err, data)
-        if data then
-            output = output .. data
-        end
-        if err then
-            callback(nil, err)
-        elseif data == nil then
-            callback(output, nil)  -- Send the command output
-        end
-    end)
+	if handle then -- Check if handle gets returned
+		local stdout = handle:get_stdout()
+		local output = ""
+		stdout:read_start(function(err, data)
+			if data then
+				output = output .. data
+			end
+			if err then
+				callback(nil, err)
+			elseif data == nil then
+				callback(output, nil) -- Send command output
+			end
+		end)
+	else
+		callback(nil, "Failed to spawn process")
+	end
 end
 
 function M.get_cpu_usage()
@@ -95,7 +102,7 @@ local function update_sys()
 		vim.cmd("redrawstatus")
 	end)
 
-	get_sys_temp(function (temp)
+	get_sys_temp(function(temp)
 		temp_c = temp
 		vim.cmd("redrawstatus")
 	end)
