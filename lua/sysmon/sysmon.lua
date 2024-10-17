@@ -3,7 +3,7 @@ local M = {}
 -- Cache last values
 local cpu_c, mem_c, temp_c = "", "", ""
 local last_update = 0
-local interval = 5000 -- 5000 milliseconds (5 secs)
+local interval = 10000 -- 5000 milliseconds (5 secs)
 
 -- Execute shell commands asynchronously
 --- @param cmd string the the bash command to execute
@@ -104,17 +104,23 @@ local function update_sys()
 
 	M.get_cpu_usage(function(cpu)
 		cpu_c = cpu
-		vim.cmd("redrawstatus") -- Force statusline redraw
+		vim.defer_fn(function()
+			vim.cmd("redrawstatus") -- safely redraw the statusline
+		end, 0) -- Defer execution to allow redraw
 	end)
 
 	M.get_mem_usage(function(mem)
 		mem_c = mem
-		vim.cmd("redrawstatus")
+		vim.defer_fn(function()
+			vim.cmd("redrawstatus")
+		end, 0)
 	end)
 
 	M.get_sys_temp(function(temp)
 		temp_c = temp
-		vim.cmd("redrawstatus")
+		vim.defer_fn(function()
+			vim.cmd("redrawstatus")
+		end, 0)
 	end)
 end
 
