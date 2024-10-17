@@ -38,7 +38,7 @@ local function run_command(cmd, callback)
 	end
 end
 
-function M.get_cpu_usage()
+function M.get_cpu_usage(callback)
 	run_command("top -bn1 | grep 'Cpu(s)' | awk '{print $2 + $4}'", function(output, err)
 		if err then
 			callback("CPU: N/A")
@@ -53,7 +53,7 @@ function M.get_cpu_usage()
 	end)
 end
 
-function M.get_mem_usage()
+function M.get_mem_usage(callback)
 	run_command("free -m | grep Mem | awk '{print $3/$2 * 100.0}'", function(output, err)
 		if err then
 			callback("Mem: N/A")
@@ -68,7 +68,7 @@ function M.get_mem_usage()
 	end)
 end
 
-function M.get_sys_temp()
+function M.get_sys_temp(callback)
 	run_command("sensors | grep 'Package id 0:' | awk '{print $4}'", function(output, err)
 		if err then
 			callback("Temp N/A")
@@ -92,17 +92,17 @@ local function update_sys()
 
 	last_update = time
 
-	get_cpu_usage(function(cpu)
+	M.get_cpu_usage(function(cpu)
 		cpu_c = cpu
 		vim.cmd("redrawstatus") -- Force statusline redraw
 	end)
 
-	get_mem_usage(function(mem)
+	M.get_mem_usage(function(mem)
 		mem_c = mem
 		vim.cmd("redrawstatus")
 	end)
 
-	get_sys_temp(function(temp)
+	M.get_sys_temp(function(temp)
 		temp_c = temp
 		vim.cmd("redrawstatus")
 	end)
