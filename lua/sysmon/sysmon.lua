@@ -51,7 +51,7 @@ function M.update_sys()
 	-- Fetch CPU usage
 	run_command("top -bn1 | grep 'Cpu(s)' | sed 's/.*, *\\([0-9.]*\\)%* id.*/\\1/' | awk '{print 100 - $1}'",
 		function(cpu)
-			cached_cpu = "CPU: " .. trim(cpu)
+			cached_cpu = "CPU: " .. trim(cpu) .. "%%"
 		end)
 
 	-- Fetch memory usage
