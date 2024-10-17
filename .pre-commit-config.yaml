@@ -1,0 +1,9 @@
+repos:
+- repo: git@github-tia:Calinou/pre-commit-luacheck.git
+  rev: v1.0.0
+  hooks:
+  - id: luacheck
+- repo: git@github-tia:JohnnyMorganz/StyLua.git
+  rev: v0.11.3
+  hooks:
+  - id: stylua
