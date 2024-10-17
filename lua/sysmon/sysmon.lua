@@ -4,7 +4,6 @@ local M = {}
 local cached_cpu, cached_mem, cached_temp = "", "", ""
 local last_update = 0
 local update_interval = 1000 -- 1 second
-local timer = 2000
 
 -- Utility function to run shell commands asynchronously
 local function run_command(cmd, callback)
