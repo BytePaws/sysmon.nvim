@@ -9,28 +9,38 @@ local interval = 5000 -- 5000 milliseconds (5 secs)
 --- @param cmd string the the bash command to execute
 --- @param callback function the callback to handle command results
 local function run_command(cmd, callback)
-	--- @type uv_handle_t|nil
-	local handle = vim.loop.spawn("bash", {
+	local stdout = vim.loop.new_pipe(false)
+	local stderr = vim.loop.new_pipe(false)
+	--- @type uv_handle_t | nil
+	local handle
+	handle = vim.loop.spawn("bash", {
 		args = { "-c", cmd },
-		stdio = { nil, vim.loop.new_pipe(false), vim.loop.new_pipe(false) },
+		stdio = { nil, stdout, stderr },
 	}, function(code, signal)
+		if handle == nil then
+			callback(nil, "Failed to spawn process")
+		end
 		if code ~= 0 then
 			callback(nil, code, signal) -- Send error code if command fails
 		end
-		handle:close()
+		handle:close()         -- Close process handle after execution
 	end)
 
 	if handle then -- Check if handle gets returned
-		local stdout = handle:get_stdout()
-		local output = ""
+		-- Read stdout data if any
 		stdout:read_start(function(err, data)
-			if data then
-				output = output .. data
-			end
 			if err then
 				callback(nil, err)
-			elseif data == nil then
-				callback(output, nil) -- Send command output
+			elseif data then
+				callback(data, nil)
+			end
+		end)
+
+		-- Check for data in stderr
+		stderr:read_start(function(err, data)
+			if data then
+				-- Handle stderr if needed
+				vim.notify("Error: " .. data, vim.log.levels.ERROR)
 			end
 		end)
 	else
