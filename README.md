@@ -3,7 +3,7 @@ Welcome to SysMon!
 </h1>
 
 <p align="center">
-`SysMon` is a very basic system monitor plugin for my favourite text editor and IDE [LunarVim](https://github.com/LunarVim/LunarVim).
+SysMon is a very basic system monitor plugin for my favourite text editor and IDE <a href="github.com/Lunarvim/LunarVim">LunarVim</a>.
 </p>
 
 ## Features
@@ -13,7 +13,7 @@ below.
 
 ## Installation
 
-You can install this plugin using [Lazy.nvim](https://github.com/folke/lazry.nvim).
+You can install this plugin using [Lazy.nvim](https://github.com/folke/lazy.nvim).
 
 Simply add this line to your LunarVim config file at `~/.config/lvim/config.lua`:
 
