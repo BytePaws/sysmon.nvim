@@ -9,10 +9,10 @@ lvim.builtin.lualine.sections.lualine_c = {
 	},
 }
 
--- Update the system stats on CursorHold (trigger the updates periodically)
+-- start the timer to update stats
+sysmon.start_timer()
+
+-- Cleanupt timer upon exit
 vim.cmd([[
-  augroup UpdateStatusline
-    autocmd!
-    autocmd CursorHold,CursorHoldI * lua pcall(function() require('sysmon.sysmon').update_sys() end)
-  augroup END
+	autocmd VimLeavePre * lua require('sysmon.sysmon').stop_timer()
 ]])

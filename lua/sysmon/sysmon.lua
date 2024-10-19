@@ -2,8 +2,8 @@ local M = {}
 
 -- Cached values to avoid unnecessary updates
 local cached_cpu, cached_mem, cached_temp = "", "", ""
-local last_update = 0
-local update_interval = 1000 -- 1 second
+local update_interval = 2000 -- 1 second
+local timer = nil            -- Timer to fire information fetching to continue when cursor stands still
 
 -- Utility function to run shell commands asynchronously
 local function run_command(cmd, callback)
@@ -42,12 +42,6 @@ end
 
 -- Update system stats (throttled by a 5-second interval)
 function M.update_sys()
-	local current_time = vim.loop.now()
-	if current_time - last_update < update_interval then
-		return -- Skip the update if it's too soon
-	end
-	last_update = current_time
-
 	-- Fetch CPU usage
 	run_command("top -bn1 | grep 'Cpu(s)' | sed 's/.*, *\\([0-9.]*\\)%* id.*/\\1/' | awk '{print 100 - $1}'",
 		function(cpu)
@@ -68,6 +62,23 @@ end
 -- Return system stats for the statusline
 function M.update_statusline()
 	return table.concat({ cached_cpu, cached_mem, cached_temp }, " | ")
+end
+
+function M.start_timer()
+	if timer == nil then
+		timer = vim.loop.new_timer()
+		timer:start(0, update_interval, vim.schedule_wrap(function()
+			M.update_sys()
+		end))
+	end
+end
+
+function M.stop_timer()
+	if timer then
+		timer:stop()
+		timer:close()
+		timer = nil
+	end
 end
 
 return M
