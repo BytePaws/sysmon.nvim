@@ -19,17 +19,35 @@ Simply add this line to your LunarVim config file at `~/.config/lvim/config.lua`
 
 ```Lua
 lvim.plugins = {
-  {
-    "git@github.com:TiaraNivani/sysmon.nvim",
-    config = function()
-      require('sysmon')
-    end,
-  },
+    {
+        "git@github.com:TiaraNivani/sysmon.nvim",
+        config = function()
+            require('sysmon')
+        end,
+    },
 }
 ```
 
 After installation your system resources should be displayed as text in the status bar on the bottom of the screen.
 It will refresh every 5 seconds.
+
+## Configuration
+
+SysMon allows you to choose the interval in which it should fetch your system information.
+
+The default is **2 seconds**. To change this, add this to your `~/.config/lvim/config.lua` when including the plugin.
+
+```Lua
+lvim.plugins = {
+    {
+        "git@github.com:TiaraNivani/sysmon.nvim",
+        config = function()
+            local sysmon = require('sysmon')
+            sysmon.setup({ update_interval = 5000 }) -- Example: 5 seconds interval. Change this to the value you want.
+        end,
+    },
+}
+```
 
 ## Requirements
 

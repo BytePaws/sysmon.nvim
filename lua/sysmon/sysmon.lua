@@ -1,9 +1,13 @@
 local M = {}
 
+-- Default configuration
+local config = {
+	update_interval = 2000, -- Default 2 Seconds
+}
+
 -- Cached values to avoid unnecessary updates
 local cached_cpu, cached_mem, cached_temp = "", "", ""
-local update_interval = 2000 -- 1 second
-local timer = nil            -- Timer to fire information fetching to continue when cursor stands still
+local timer = nil -- Timer to fire information fetching to continue when cursor stands still
 
 -- Utility function to run shell commands asynchronously
 local function run_command(cmd, callback)
@@ -67,7 +71,7 @@ end
 function M.start_timer()
 	if timer == nil then
 		timer = vim.loop.new_timer()
-		timer:start(0, update_interval, vim.schedule_wrap(function()
+		timer:start(0, config.update_interval, vim.schedule_wrap(function()
 			M.update_sys()
 		end))
 	end
@@ -79,6 +83,15 @@ function M.stop_timer()
 		timer:close()
 		timer = nil
 	end
+end
+
+-- Plugin setup
+function M.setup(user_config)
+	-- Merge user config with default
+	config = vim.tbl_deep_extend("force", config, user_config or {})
+
+	-- Start timer with updated config
+	M.start_timer()
 end
 
 return M

@@ -12,7 +12,7 @@ lvim.builtin.lualine.sections.lualine_c = {
 -- start the timer to update stats
 sysmon.start_timer()
 
--- Cleanupt timer upon exit
+-- Cleanup timer upon exit
 vim.cmd([[
 	autocmd VimLeavePre * lua require('sysmon.sysmon').stop_timer()
 ]])
