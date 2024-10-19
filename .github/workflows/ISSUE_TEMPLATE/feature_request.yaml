@@ -1,0 +1,23 @@
+---
+name: Feature Request
+description: Propose a new functionality
+title: "[FR]"
+labels: ["proposal", "pending"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        **NOTE**: Please only use this form for submitting _well-formed and actionable_ proposals.
+  - type: input
+    attributes:
+      label: Version
+      description: What version of SysMon are you working with?
+      placeholder: main
+  - type: textarea
+    attributes:
+      label: Proposal
+      description: >
+        Describe your idea in detail. Include any specific requirements
+        for your plan to work as well as the supposed benefit of your change.
+    validations:
+      required: true

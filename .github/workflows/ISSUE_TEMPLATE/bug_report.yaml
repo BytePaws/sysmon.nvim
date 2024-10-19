@@ -1,0 +1,47 @@
+---
+name: Bug Report
+description: Found a bug? Let me know!
+title: "[BUG]"
+labels: ["bug", "pending"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        **NOTE**: Please only use this form to report _reproducible bugs_.
+        If oyu have any questions or are looking for assistance,
+        please [send me an email](mailto:tiara.dev@proton.me).
+  - type: input
+    attributes:
+      label: Version
+      description: >
+        Which version (branch or tag) is affected by this bug?
+      placeholder: main
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: LunarVim Version
+      description: >
+        Which version of LunarVim are you using?
+      placeholder: v1.4
+  - type: textarea
+    attributes:
+      label: Bug Description
+      description: >
+        Please describe in detail what issue you face.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected Behaviour
+      description: >
+        Please describe the behaviour you expected to see.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: >
+        Please descibe what steps I need to take to reproduce this issue.
+    validations:
+      requred: true
