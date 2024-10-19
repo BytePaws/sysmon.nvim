@@ -3,6 +3,13 @@ local M = {}
 -- Default configuration
 local config = {
 	update_interval = 2000, -- Default 2 Seconds
+	use_icons = false,   -- Do not use icons by default
+}
+
+local icons = {
+	cpu = "",
+	mem = "",
+	temp = "",
 }
 
 -- Cached values to avoid unnecessary updates
@@ -49,17 +56,30 @@ function M.update_sys()
 	-- Fetch CPU usage
 	run_command("top -bn1 | grep 'Cpu(s)' | sed 's/.*, *\\([0-9.]*\\)%* id.*/\\1/' | awk '{print 100 - $1}'",
 		function(cpu)
-			cached_cpu = "CPU: " .. trim(cpu) .. "%%"
+			if config.use_icons then
+				-- TODO: Use icons
+				cached_cpu = icons.cpu .. " " .. trim(cpu) .. "%%"
+			else
+				cached_cpu = "CPU: " .. trim(cpu) .. "%%"
+			end
 		end)
 
 	-- Fetch memory usage
-	run_command("free -m | awk 'NR==2{printf \"Mem: %.2f/%.2f GB\", $3/1024,$2/1024 }'", function(mem)
-		cached_mem = trim(mem)
+	run_command("free -m | awk 'NR==2{printf \"%.2f/%.2f GB\", $3/1024,$2/1024 }'", function(mem)
+		if config.use_icons then
+			cached_mem = icons.mem .. " " .. trim(mem)
+		else
+			cached_mem = "Mem: " .. trim(mem)
+		end
 	end)
 
 	-- Fetch system temperature
 	run_command("sensors | awk '/^CPU:/{print $2}'", function(temp)
-		cached_temp = "Temp: " .. trim(temp)
+		if config.use_icons then
+			cached_temp = icons.temp .. " " .. trim(temp)
+		else
+			cached_temp = "Temp: " .. trim(temp)
+		end
 	end)
 end
 

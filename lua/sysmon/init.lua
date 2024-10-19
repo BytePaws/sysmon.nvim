@@ -1,18 +1,26 @@
--- Load the core system monitor functionality
 local sysmon = require("sysmon.sysmon")
 
-lvim.builtin.lualine.sections.lualine_c = {
-	{
-		function()
-			return sysmon.update_statusline()
-		end,
-	},
-}
+-- Expose setup function for external configuration
+local M = {}
 
--- start the timer to update stats
-sysmon.start_timer()
+M.setup = function(user_config)
+	sysmon.setup(user_config) -- Apply user configuration to sysmon
 
--- Cleanup timer upon exit
-vim.cmd([[
-	autocmd VimLeavePre * lua require('sysmon.sysmon').stop_timer()
-]])
+	lvim.builtin.lualine.sections.lualine_c = {
+		{
+			function()
+				return sysmon.update_statusline()
+			end,
+		},
+	}
+
+	-- Start the timer
+	sysmon.start_timer()
+
+	-- Cleanup timer upon exit
+	vim.cmd([[
+        autocmd VimLeavePre * lua require('sysmon.sysmon').stop_timer()
+    ]])
+end
+
+return M
