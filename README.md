@@ -49,6 +49,23 @@ lvim.plugins = {
 }
 ```
 
+To use icons instead of the simple text lables for the fields enable the `use_icon` option.
+
+```Lua
+lvim.plugins = {
+    {
+        "git@github.com:TiaraNivani/sysmon.nvim",
+        config = function()
+            local sysmon = require('sysmon')
+            sysmon.setup({ update_interval = 5000 }) -- Example: 5 seconds interval. Change this to the value you want.
+        end,
+    },
+}
+```
+
+> [!Note]
+> This setting was tested using both `kitty` and `konsole` with NerdFonts installed.
+
 ## Requirements
 
 - NeoVim 0.5 or higher
