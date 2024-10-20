@@ -83,8 +83,8 @@ lvim.plugins = {
 ## Todos
 
 - [ ] Implement Unittests
-- [ ] Experiment with icons instead of Text labels
-- [ ] Fix content not refreshing when cursor is still
+- [x] Experiment with icons instead of Text labels
+- [x] Fix content not refreshing when cursor is still
 - [ ] Support other status bar plugins
 - [ ] Support other neovim setups besides LunarVim
 
