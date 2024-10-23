@@ -29,7 +29,13 @@ lvim.plugins = {
 ```
 
 After installation your system resources should be displayed as text in the status bar on the bottom of the screen.
-It will refresh every 5 seconds.
+It will refresh every 2 seconds.
+
+> [!Note]
+> While this plugin was developed specifically with and for LunarVim, it should be compatible with any NeoVim configuration
+> using the [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) statusbar.
+>
+> If you want, please share you experience with me in the discussion section so I can build a collection of supported configurations. Thank you :)
 
 ## Configuration
 
@@ -57,7 +63,10 @@ lvim.plugins = {
         "git@github.com:TiaraNivani/sysmon.nvim",
         config = function()
             local sysmon = require('sysmon')
-            sysmon.setup({ update_interval = 5000 }) -- Example: 5 seconds interval. Change this to the value you want.
+            sysmon.setup({
+                update_interval = 5000, -- Example: 5 seconds interval. Change this to the value you want.
+                use_icons = true,
+            })
         end,
     },
 }
