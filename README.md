@@ -20,7 +20,7 @@ Simply add this line to your LunarVim config file at `~/.config/lvim/config.lua`
 ```Lua
 lvim.plugins = {
     {
-        "git@github.com:TiaraNivani/sysmon.nvim",
+        "git@github.com:BytePaws/sysmon.nvim",
         config = function()
             require('sysmon')
         end,
@@ -46,7 +46,7 @@ The default is **2 seconds**. To change this, add this to your `~/.config/lvim/c
 ```Lua
 lvim.plugins = {
     {
-        "git@github.com:TiaraNivani/sysmon.nvim",
+        "git@github.com:BytePaws/sysmon.nvim",
         config = function()
             local sysmon = require('sysmon')
             sysmon.setup({ update_interval = 5000 }) -- Example: 5 seconds interval. Change this to the value you want.
@@ -60,7 +60,7 @@ To use icons instead of the simple text lables for the fields enable the `use_ic
 ```Lua
 lvim.plugins = {
     {
-        "git@github.com:TiaraNivani/sysmon.nvim",
+        "git@github.com:BytePaws/sysmon.nvim",
         config = function()
             local sysmon = require('sysmon')
             sysmon.setup({
