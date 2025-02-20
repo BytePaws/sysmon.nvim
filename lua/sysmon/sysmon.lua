@@ -41,7 +41,9 @@ local function run_command(cmd, callback)
 
 	stderr:read_start(function(_, data)
 		if data then
-			vim.notify("Error: " .. data, vim.log.levels.ERROR)
+			vim.schedule(function()
+				vim.notify("Error: " .. data, vim.log.levels.ERROR)
+			end)
 		end
 	end)
 end
