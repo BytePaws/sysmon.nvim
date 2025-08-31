@@ -1,3 +1,8 @@
+> [!Warning]
+> This repo has been moved to [Codeberg](https://codeberg.org/BytePaws/sysmon.nvim) due to recent events involving GitHub.
+> Any further updates will happen there. Bugs opened here will not be answered.
+> Please update the URLs in your configs accordingly.
+
 <h1 align="center">
 Welcome to SysMon!
 </h1>
